@@ -1,0 +1,45 @@
+# IDE and OS specific files
+.idea/
+.eclipse/
+.classpath
+.project
+.settings/
+target/
+pom.xml.releaseBackup
+pom.xml.tag
+pom.xml.versionsBackup
+.mvn/
+*.iml
+*.ipr
+*.iws
+
+# JDK specific files
+*.class
+*.jar
+
+# OS specific temporary files
+*.log
+*.tmp
+hs_err_pid*
+
+# Test reports (can be adjusted based on your preference)
+test-report.html
+*.xml
+
+# Text editor backups
+*.bak
+*.swp
+
+# Secret files
+.env
+# Add other secret files here (e.g., api keys, passwords)
+
+# Build artifacts (adjust based on your build tool)
+*.war
+*.ear
+
+# Generated documentation (if applicable)
+doc/
+
+# Dependency management files (if using a different tool)
+requirements.txt
