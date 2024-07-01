@@ -1,5 +1,5 @@
 {
-    "existingPokeMon": {
+    "existingPokemon": {
       "id": 1,
         "pokemon": "Bulbasaur",
         "type": "Grass",
@@ -14,7 +14,7 @@
         "location": "Kanto region, Route 2",
         "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
     },
-    "nonExistingPokeMon": {
+    "nonExistingPokemon": {
       "id": 56789
     }
   }

@@ -2,6 +2,8 @@ package com.dummyapi.tests;
 
 import com.dummyapi.TestBase;
 import com.dummyapi.endpoints.ProductsEndpoint;
+import com.dummyapi.utils.TestReporter;
+
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -27,6 +29,7 @@ public class ProductsTest extends TestBase {
 
     @Test
     public void testGetAllProducts() {
+        TestReporter.logStep("Get all products");
         Response response = given()
             .spec(requestSpec)
             .when()
@@ -58,6 +61,7 @@ public class ProductsTest extends TestBase {
                 ))
             .extract().response();
 
+            TestReporter.logStep("Assert Expected Response Message");
         assertEquals(response.getContentType(), "application/json");
         assertTrue(response.getBody().asString().contains("id"));
         assertTrue(response.getBody().asString().contains("productCategory"));
@@ -83,10 +87,11 @@ public class ProductsTest extends TestBase {
             JSONObject testData = getTestData();
             JSONObject existingProduct = testData.getJSONObject("existingProduct");
     
-            // Get the already existing MovieID 
+            TestReporter.logStep("Get the already existing productID ");
             int existingProductId = existingProduct.getInt("id");
     
-            // Get the existing Movie
+
+            TestReporter.logStep("Get the existing Product");
             Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -95,10 +100,9 @@ public class ProductsTest extends TestBase {
                 .then()
                 .statusCode(200)
                 .time(lessThan(5000L))
-                
                 .extract().response();
         
-            // Assertions based on Product data structure
+            TestReporter.logStep("Assert Expected Response Message");
             assertEquals(getResponse.getContentType(), "application/json");
             JSONObject existingMovieResponse = new JSONObject(getResponse.getBody().asString());
             assertEquals(existingMovieResponse.getInt("id"), existingProduct.getInt("id"));
@@ -123,7 +127,7 @@ public class ProductsTest extends TestBase {
                     JSONObject testData = getTestData();
                     JSONObject nonExistingProduct = testData.getJSONObject("nonExistingProduct");
             
-                    // Get the non existing MovieID
+                    TestReporter.logStep("Get the non existing productID");
                     int nonExistingProductId = nonExistingProduct.getInt("id");
             
                     Response getResponse = given()
@@ -136,7 +140,7 @@ public class ProductsTest extends TestBase {
                                     .time(lessThan(5000L))
                                     .extract().response();
                         
-                            // Assert Expected Response Message
+                            TestReporter.logStep("Assert Expected Response Message");
                             assertEquals(getResponse.getContentType(), "application/json");
                             JSONObject fetchNonExistingMovie = new JSONObject(getResponse.getBody().asString());
                             String expectedMessage = String.format("{\"message\":\"Product ID %d not found!\"}", nonExistingProductId);

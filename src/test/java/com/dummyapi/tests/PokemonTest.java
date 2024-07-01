@@ -2,6 +2,8 @@ package com.dummyapi.tests;
 
 import com.dummyapi.TestBase;
 import com.dummyapi.endpoints.PokemonEndpoint;
+import com.dummyapi.utils.TestReporter;
+
 import io.restassured.response.Response;
 
 import org.json.JSONObject;
@@ -26,7 +28,8 @@ public class PokemonTest extends TestBase {
     }
 
        @Test
-    public void testGetAllPokMon() {
+    public void testGetAllPokemon() {
+        TestReporter.logStep("Get all pokemon details"); 
         Response response = given()
             .spec(requestSpec)
             .when()
@@ -47,7 +50,7 @@ public class PokemonTest extends TestBase {
             ))
             .extract().response();
 
-            // assert PokMon data structure
+            TestReporter.logStep("assert Pokemon data structure"); 
         assertEquals(response.getContentType(), "application/json");
         assertTrue(response.getBody().asString().contains("id"));
         assertTrue(response.getBody().asString().contains("pokemon"));
@@ -61,12 +64,12 @@ public class PokemonTest extends TestBase {
     @Test
             public void testGetExistingSinglePokMon() throws IOException {
             JSONObject testData = getTestData();
-            JSONObject existingPokMon = testData.getJSONObject("existingPokeMon");
+            JSONObject existingPokemon = testData.getJSONObject("existingPokemon");
+     
+            TestReporter.logStep("Get the already existing PokemonID"); 
+            int existingPokMonId = existingPokemon.getInt("id");
     
-            // Get the already existing MovieID 
-            int existingPokMonId = existingPokMon.getInt("id");
-    
-            // Get the existing Movie
+            TestReporter.logStep("Get the existing pokemon"); 
             Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -78,27 +81,29 @@ public class PokemonTest extends TestBase {
 
                 .extract().response();
         
-                           // Assertions based on Pokemon data structure
+                           
+                           TestReporter.logStep("Assertions based on Pokemon data structure"); 
             assertEquals(getResponse.getContentType(), "application/json");
             JSONObject existingMovieResponse = new JSONObject(getResponse.getBody().asString());
-            assertEquals(existingMovieResponse.getInt("id"), existingPokMon.getInt("id"));
-            assertEquals(existingMovieResponse.getString("pokemon"), existingPokMon.getString("pokemon"));
-            assertEquals(existingMovieResponse.getString("type"), existingPokMon.getString("type"));
-            assertEquals(existingMovieResponse.getInt("hitpoints"), existingPokMon.getInt("hitpoints"));
-            assertEquals(existingMovieResponse.getString("location"), existingPokMon.getString("location"));
-            assertEquals(existingMovieResponse.getString("image_url"), existingPokMon.getString("image_url"));
-            assertEquals(existingMovieResponse.getJSONArray("evolutions").length(), existingPokMon.getJSONArray("evolutions").length());
-            assertEquals(existingMovieResponse.getJSONArray("abilities").length(), existingPokMon.getJSONArray("abilities").length());
+            assertEquals(existingMovieResponse.getInt("id"), existingPokemon.getInt("id"));
+            assertEquals(existingMovieResponse.getString("pokemon"), existingPokemon.getString("pokemon"));
+            assertEquals(existingMovieResponse.getString("type"), existingPokemon.getString("type"));
+            assertEquals(existingMovieResponse.getInt("hitpoints"), existingPokemon.getInt("hitpoints"));
+            assertEquals(existingMovieResponse.getString("location"), existingPokemon.getString("location"));
+            assertEquals(existingMovieResponse.getString("image_url"), existingPokemon.getString("image_url"));
+            assertEquals(existingMovieResponse.getJSONArray("evolutions").length(), existingPokemon.getJSONArray("evolutions").length());
+            assertEquals(existingMovieResponse.getJSONArray("abilities").length(), existingPokemon.getJSONArray("abilities").length());
         }
 
         @Test
-        public void testGetNonExistingPokeMon() throws IOException {
+        public void testGetNonExistingPokemon() throws IOException {
                     JSONObject testData = getTestData();
-                    JSONObject nonExistingPokeMon = testData.getJSONObject("nonExistingPokeMon");
+                    JSONObject nonExistingPokeMon = testData.getJSONObject("nonExistingPokemon");
             
-                    // Get the non existing MovieID
+                    TestReporter.logStep("Get the non existing pokemonID"); 
                     int nonExistingPokeMonId = nonExistingPokeMon.getInt("id");
             
+                    TestReporter.logStep("Get the non existing pokemon details"); 
                     Response getResponse = given()
                                     .spec(requestSpec)
                                     .header("Content-Type", "application/json")
@@ -109,7 +114,8 @@ public class PokemonTest extends TestBase {
                                     .time(lessThan(5000L))
                                     .extract().response();
                         
-                            // Assert Expected Response Message
+                            
+                            TestReporter.logStep("Assert Expected Response Message"); 
                             assertEquals(getResponse.getContentType(), "application/json");
                             JSONObject fetchNonExistingMovie = new JSONObject(getResponse.getBody().asString());
                             String expectedMessage = String.format("{\"message\":\"Pokemon ID %d not found!\"}", nonExistingPokeMonId);

@@ -2,6 +2,8 @@ package com.dummyapi.tests;
 
 import com.dummyapi.TestBase;
 import com.dummyapi.endpoints.MoviesEndpoint;
+import com.dummyapi.utils.TestReporter;
+
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -26,6 +28,7 @@ public class MoviesTest extends TestBase {
 
     @Test
     public void testGetAllMovies() {
+        TestReporter.logStep("Get all movies details"); 
         Response response = given()
                 .spec(requestSpec)
                 .when()
@@ -43,7 +46,7 @@ public class MoviesTest extends TestBase {
             ))
                 .extract().response();
 
-         // assert blogPost data structure
+                TestReporter.logStep("assert blogPost data structure"); 
         assertEquals(response.getContentType(), "application/json");
         assertTrue(response.getBody().asString().contains("id"));
         assertTrue(response.getBody().asString().contains("movie"));
@@ -57,10 +60,11 @@ public class MoviesTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject existingMovie = testData.getJSONObject("existingMovie");
 
-        // Get the already existing MovieID 
+        TestReporter.logStep("Get the already existing MovieID"); 
         int existingMovieId = existingMovie.getInt("id");
 
-        // Get the existing Movie
+        // Get the existing single Movie
+        TestReporter.logStep("Get the already existing Movie"); 
         Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -71,7 +75,7 @@ public class MoviesTest extends TestBase {
                 .time(lessThan(5000L))
                 .extract().response();
     
-        // assert blogPost data structure
+        TestReporter.logStep("assert blogPost data structure"); 
         assertEquals(getResponse.getContentType(), "application/json");
         JSONObject existingMovieResponse = new JSONObject(getResponse.getBody().asString());
         assertEquals(existingMovieResponse.getInt("id"), existingMovie.getInt("id"));
@@ -86,9 +90,10 @@ public class MoviesTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject nonExistingMovie = testData.getJSONObject("noExistingMovie");
 
-        // Get the non existing MovieID
+        TestReporter.logStep("Get the non existing MovieID"); 
         int nonExistingMovieId = nonExistingMovie.getInt("id");
-
+       
+        TestReporter.logStep("Request the non existing movie detail"); 
         Response getResponse = given()
                         .spec(requestSpec)
                         .header("Content-Type", "application/json")
@@ -99,7 +104,7 @@ public class MoviesTest extends TestBase {
                         .time(lessThan(5000L))
                         .extract().response();
             
-                // // Assert Expected Response Message
+                TestReporter.logStep("Assert Expected Response Message"); 
                 assertEquals(getResponse.getContentType(), "application/json");
                 JSONObject fetchNonExistingMovie = new JSONObject(getResponse.getBody().asString());
                 String expectedMessage = String.format("{\"message\":\"Movie ID %d not found!\"}", nonExistingMovieId);

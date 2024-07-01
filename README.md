@@ -6,11 +6,18 @@ This repository contains automated test scripts using RestAssured and Java to ve
 
 For each endpoint (Movies, Blog Posts, Users, Pokemon, Products), we cover the following scenarios:
 
-1. Get All: Retrieves all items and verifies the response.
-2. Create and Get: Creates a new item, then retrieves it to verify creation.
-3. Create with Invalid Data: Attempts to create an item with invalid data and verifies error handling.
-4. Update: Creates an item, updates it, then verifies the update.
-5. Delete: Creates an item, deletes it, then verifies it's no longer retrievable.
+#### User Endpoint scenario 
+1. Get All user: Retrieves all users and verifies the response.
+2. Get existing single user: Retrieve single user and verifies the response.
+3. Get non existing single user: Retrieve mon existing user and verifies the response.
+4. Create and get user: Creates a new user, then retrieves it to verify creation.
+4. Create and get user with existing userID: Creates a new user with existing ID, then retrieves it to verify error response.
+
+#### Movie, Blog Post, Pokemon, Products Endpoint scenario 
+1. Fetch All records: Retrieves all details and verifies the response.
+2. Fetch single record: Retrieve single detail and verifies the response.
+3. Fetch non existing single record: Retrieve mon existing detail and verifies the error response.
+
 
 ## Assertions Used
 
@@ -19,7 +26,7 @@ We use various assertions to ensure the correctness of our API responses:
 - Status Code Verification: Ensures correct HTTP status codes for different operations.
 - Response Time Checks: Verifies that responses are received within acceptable time limits.
 - JSON Structure Validation: Checks for the presence of expected keys in JSON responses.
-- Data Integrity Checks: Verifies that created/updated data matches the input data.
+- Data Integrity Checks: Verifies that created/existing data matches the input data.
 - Error Handling: Ensures appropriate error responses for invalid inputs.
 - Content Type Verification: Checks that responses have the correct content type.
 
@@ -57,8 +64,8 @@ This project is configured to run tests automatically on GitHub Actions. The wor
 
 After running the tests, TestNG generates an HTML report. To view the report:
 
-1. Navigate to the `target/surefire-reports` directory.
-2. Open `index.html` in a web browser.
+1. Navigate to the `test-output/` directory.
+2. Open `ExtentReport.html` in a web browser.
 
 For GitHub Actions runs, you can download the test reports as artifacts from the workflow run page.
 

@@ -2,6 +2,7 @@ package com.dummyapi.tests;
 
 import com.dummyapi.TestBase;
 import com.dummyapi.endpoints.BlogPostsEndpoint;
+import com.dummyapi.utils.TestReporter;
 
 import io.restassured.response.Response;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ public class BlogPostsTest extends TestBase {
 
     @Test
     public void testGetAllBlogPosts() {
+        TestReporter.logStep("request all blogs");
         Response response = given()
                 .spec(requestSpec)
                 .when()
@@ -44,8 +46,7 @@ public class BlogPostsTest extends TestBase {
                 hasKey("content")
                 ))
                 .extract().response();
-
-                // assert blogPost data structure
+        TestReporter.logStep("assert blogPost data structure");       
         assertEquals(response.getContentType(), "application/json");
         assertTrue(response.getBody().asString().contains("id"));
         assertTrue(response.getBody().asString().contains("title"));
@@ -58,11 +59,11 @@ public class BlogPostsTest extends TestBase {
     public void testGetExistingSingleBlog() throws IOException {
         JSONObject testData = getTestData();
         JSONObject existingBlogPost = testData.getJSONObject("existingBlogPost");
-
-        // Get the already existing BlogPostID 
+ 
+        TestReporter.logStep("Get the already existing BlogPostID"); 
         int existingBlogPostId = existingBlogPost.getInt("id");
 
-        // Get the existing BlogPost
+        TestReporter.logStep("Get the existing BlogPost"); 
         Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -73,7 +74,7 @@ public class BlogPostsTest extends TestBase {
                 .time(lessThan(5000L))
                 .extract().response();
     
-        // assert blogPost data structure
+        TestReporter.logStep("assert blogPost data structure");  
         assertEquals(getResponse.getContentType(), "application/json");
         JSONObject existingBlogResponse = new JSONObject(getResponse.getBody().asString());
         assertEquals(existingBlogResponse.getInt("id"), existingBlogPost.getInt("id"));
@@ -88,7 +89,7 @@ public class BlogPostsTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject nonExistingBlogPost = testData.getJSONObject("nonExistingBlogPost");
 
-        // Get the non existing BlogPostID 
+        TestReporter.logStep("Get the non existing BlogPostID "); 
         int nonExistingBlogPostId = nonExistingBlogPost.getInt("id");
 
         Response getResponse = given()
@@ -101,7 +102,7 @@ public class BlogPostsTest extends TestBase {
                         .time(lessThan(5000L))
                         .extract().response();
             
-                // Assert Expected Response Message
+                TestReporter.logStep("Assert Expected Response Message"); 
                 assertEquals(getResponse.getContentType(), "application/json");
                 JSONObject fetchNonExistingBlogPost = new JSONObject(getResponse.getBody().asString());
                 String expectedMessage = String.format("{\"message\":\"Post ID %d not found!\"}", nonExistingBlogPostId);

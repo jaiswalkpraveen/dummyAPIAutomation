@@ -1,15 +1,16 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="API Test Suite" verbose="1" >
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="API Test Suite" verbose="1">
     <listeners>
         <listener class-name="com.dummyapi.TestListener"/>
     </listeners>
-    <test name="API Tests" >
+    <parameter name="outputDir" value="test-output"/>
+    <test name="API Tests">
         <classes>
-            <class name="com.dummyapi.tests.MoviesTest" />
-            <class name="com.dummyapi.tests.BlogPostsTest" />
-            <class name="com.dummyapi.tests.UsersTest" />
-            <class name="com.dummyapi.tests.PokemonTest" />
-            <class name="com.dummyapi.tests.ProductsTest" />
+            <class name="com.dummyapi.tests.MoviesTest"/>
+            <class name="com.dummyapi.tests.BlogPostsTest"/>
+            <class name="com.dummyapi.tests.UsersTest"/>
+            <class name="com.dummyapi.tests.PokemonTest"/>
+            <class name="com.dummyapi.tests.ProductsTest"/>
         </classes>
     </test>
 </suite>

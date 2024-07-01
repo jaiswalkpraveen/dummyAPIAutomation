@@ -2,6 +2,8 @@ package com.dummyapi.tests;
 
 import com.dummyapi.TestBase;
 import com.dummyapi.endpoints.UsersEndpoint;
+import com.dummyapi.utils.TestReporter;
+
 import io.restassured.response.Response;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -31,6 +33,7 @@ public class UsersTest extends TestBase {
 
          @Test
     public void testGetAllUsers() {
+        TestReporter.logStep("Get all users");
         Response response = given()
                 .spec(requestSpec)
                 .when()
@@ -54,7 +57,8 @@ public class UsersTest extends TestBase {
                 ))
                 .extract().response();
     
-                // assert user data structure
+                
+                TestReporter.logStep("assert user data structure");
         assertEquals(response.getContentType(), "application/json");
         assertTrue(response.getBody().asString().contains("name"));
         assertTrue(response.getBody().asString().contains("username"));
@@ -68,10 +72,10 @@ public class UsersTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject existingUser = testData.getJSONObject("existingUser");
 
-        // Get the already existing userID  
+        TestReporter.logStep("Get the already existing userID");
         int existingUserId = existingUser.getInt("id");
 
-        // Get the existing user
+        TestReporter.logStep("Get the existing user");
         Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -82,7 +86,7 @@ public class UsersTest extends TestBase {
                 .time(lessThan(5000L))
                 .extract().response();
     
-        // assert user data structure
+        TestReporter.logStep("assert user data structure");
         assertEquals(getResponse.getContentType(), "application/json");
         JSONObject createdUser = new JSONObject(getResponse.getBody().asString());
         assertEquals(createdUser.getString("name"), existingUser.getString("name"));
@@ -95,9 +99,10 @@ public class UsersTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject nonExistingUser = testData.getJSONObject("nonexistingUser");
 
-        // Get the non existing userID
+        TestReporter.logStep("Get the non existing userID");
         int nonExistingUserId = nonExistingUser.getInt("id");
 
+        TestReporter.logStep("Get the non existing user");
         Response getResponse = given()
                         .spec(requestSpec)
                         .header("Content-Type", "application/json")
@@ -108,7 +113,8 @@ public class UsersTest extends TestBase {
                         .time(lessThan(5000L))
                         .extract().response();
             
-                // // Assert Expected Response Message
+                //
+                TestReporter.logStep("Assert Expected Response Message");
                 assertEquals(getResponse.getContentType(), "application/json");
                 JSONObject fetchNonExistingUser = new JSONObject(getResponse.getBody().asString());
                 String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", nonExistingUserId);
@@ -120,12 +126,11 @@ public class UsersTest extends TestBase {
         JSONObject testData = getTestData();
         JSONObject validUser = testData.getJSONObject("validUser");
 
-        // Generate a unique ID 
+        TestReporter.logStep("Generate a unique ID");
         int uniqueId = generateUniqueId();
         validUser.put("id", uniqueId); // Add the generated ID to the user data
 
-
-        // Create user
+        TestReporter.logStep("Create new user");
         Response createResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -138,16 +143,17 @@ public class UsersTest extends TestBase {
                 .body("message", equalTo("User created successfully:"))
                 .extract().response();
 
+                TestReporter.logStep("Assert Expected Response Message");
         assertEquals(createResponse.getContentType(), "application/json");
         JSONObject createdUser = new JSONObject(createResponse.getBody().asString());
         assertEquals(createdUser.getString("name"), validUser.getString("name"));
         assertEquals(createdUser.getString("username"), validUser.getString("username"));
         assertEquals(createdUser.getString("email"), validUser.getString("email"));
     
-        // Extract created user ID
+        TestReporter.logStep("Extract newly created user ID");
         int createdUserId = createResponse.jsonPath().getInt("id");
 
-        // Get the created user
+        TestReporter.logStep("Get the created user details");
         Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -158,7 +164,7 @@ public class UsersTest extends TestBase {
                 .time(lessThan(5000L))
                 .extract().response();
     
-        // Assert Expected Response Message
+        TestReporter.logStep("Assert Expected Response Message");
         assertEquals(getResponse.getContentType(), "application/json");
         JSONObject fetchCreatedUser = new JSONObject(getResponse.getBody().asString());
         String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", createdUserId);
@@ -172,10 +178,11 @@ public class UsersTest extends TestBase {
         JSONObject validUser = testData.getJSONObject("validUser");
         JSONObject existingUser = testData.getJSONObject("existingUser");
 
+        TestReporter.logStep("get existing userID");
         int existingId = existingUser.getInt("id");
         validUser.put("id", existingId);
 
-        // Create user with alreday existing ID 1
+        TestReporter.logStep("get existing user");
         Response createResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
@@ -187,7 +194,7 @@ public class UsersTest extends TestBase {
                 .time(lessThan(5000L))
                 .extract().response();
     
-        // Assert Expected Response Message
+        TestReporter.logStep("Assert Expected Response Message");
         assertEquals(createResponse.getContentType(), "application/json");
         JSONObject fetchExistingUserResponse = new JSONObject(createResponse.getBody().asString());
         String expectedMessage = String.format("{\"message\":\"The user with the id %d already exists\"}", existingId);
