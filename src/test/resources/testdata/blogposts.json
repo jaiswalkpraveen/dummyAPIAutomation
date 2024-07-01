@@ -1,0 +1,12 @@
+{
+    "existingBlogPost": {
+        "id": 1,
+        "title": "How to Build a Successful Blog",
+        "author": "Tim Burton",
+        "date_published": "2022-01-19",
+        "content": "Building a successful blog takes time, effort, and dedication. It's not just about writing; it's about creating valuable content that resonates with your readers. Start by identifying your niche and understanding your audience's needs. Consistency is key – keep a regular posting schedule and always engage with your audience through comments and social media. Remember to promote your blog on various platforms and consider collaborations with other bloggers to expand your reach. Over time, with perseverance and the right strategy, you'll see growth and success in your blogging journey."
+    },
+    "nonExistingBlogPost":{
+      "id":808
+    }
+  }

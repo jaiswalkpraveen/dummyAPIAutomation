@@ -1,0 +1,58 @@
+{
+    "existingUser": {
+      "id":1,
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "johndoe@example.com",
+      "address": {
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipcode": "94111"
+      }
+    },
+      "validUser": {
+        "name": "Elon Musk",
+        "username": "elonmusk",
+        "email": "elonmusk@planet.mars"
+      },
+      "invalidUser": {
+        "name": "",
+        "username": "",
+        "email": "invalidemail"
+      },
+      "nonexistingUser":{
+        "id": 67890 
+      },
+    
+    "updatedUser": {
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "age": 31
+    },
+    "anotherValidUser": {
+      "name": "Alice Smith",
+      "email": "alice.smith@example.com",
+      "age": 25
+    },
+    "userWithSpecialChars": {
+      "name": "O'Connor-Smith",
+      "email": "oconnor-smith@example.com",
+      "age": 40
+    },
+    "userWithVeryLongName": {
+      "name": "This user has an extremely long name that might exceed the maximum allowed length for a user name in the database or API",
+      "email": "longname@example.com",
+      "age": 35
+    },
+    "userWithMaximumAge": {
+      "name": "Elder User",
+      "email": "elder.user@example.com",
+      "age": 120
+    },
+    "userWithMinimumAge": {
+      "name": "Young User",
+      "email": "young.user@example.com",
+      "age": 18
+    }
+  }

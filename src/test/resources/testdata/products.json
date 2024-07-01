@@ -1,0 +1,34 @@
+{
+    "existingProduct": {
+        "id": 1,
+        "productCategory": "Smartphone",
+        "name": "iPhone 12 Pro",
+        "brand": "Apple",
+        "description": "The iPhone 12 Pro features a new design and edge-to-edge Super Retina XDR display.",
+        "basePrice": 999,
+        "inStock": true,
+        "stock": 43,
+        "featuredImage": "https://placehold.co/800x600?text=iPhone+12+Pro",
+        "thumbnailImage": "https://placehold.co/400x300?text=iPhone+12+Pro",
+        "storageOptions": [
+            "128GB",
+            "256GB",
+            "512GB"
+        ],
+        "colorOptions": [
+            "Graphite",
+            "Silver",
+            "Gold",
+            "Pacific Blue"
+        ],
+        "display": "6.1-inch Super Retina XDR display",
+        "CPU": "A14 Bionic chip",
+        "camera": {
+            "rearCamera": "Pro 12MP camera system: Ultra Wide, Wide, and Telephoto cameras",
+            "frontCamera": "12MP TrueDepth front camera"
+        }
+    },
+    "nonExistingProduct": {
+      "id": 789
+    }
+  }

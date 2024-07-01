@@ -1,0 +1,12 @@
+{
+    "existingMovie": {
+        "id": 1,
+        "movie": "The Shawshank Redemption",
+        "rating": 9.2,
+        "image": "images/shawshank.jpg",
+        "imdb_url": "https://www.imdb.com/title/tt0111161/"
+    },
+    "noExistingMovie": {
+      "id": 809
+    }
+  }

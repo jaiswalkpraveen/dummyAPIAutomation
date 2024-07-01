@@ -1,0 +1,20 @@
+{
+    "existingPokeMon": {
+      "id": 1,
+        "pokemon": "Bulbasaur",
+        "type": "Grass",
+        "abilities": [
+            "Overgrow"
+        ],
+        "hitpoints": 45,
+        "evolutions": [
+            "Ivysaur",
+            "Venusaur"
+        ],
+        "location": "Kanto region, Route 2",
+        "image_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+    },
+    "nonExistingPokeMon": {
+      "id": 56789
+    }
+  }
