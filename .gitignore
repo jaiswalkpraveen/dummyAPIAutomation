@@ -20,7 +20,8 @@ target/
 hs_err_pid*
 
 # Test reports (can be adjusted based on your preference)
-test-report.html
+test-output/
+.DS_Store
 
 # Text editor backups
 *.bak
