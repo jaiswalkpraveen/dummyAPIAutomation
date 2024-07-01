@@ -1,6 +1,47 @@
 # Privilee Dummy API Test Automation
+This project is an API automation framework for testing RESTful dummy APIs. It uses RestAssured, TestNG, and follows the Page Object Model design pattern.
 
-This repository contains automated test scripts using RestAssured and Java to verify functionalities of the dummyAPI.
+## Tools and Technologies
+
+- Java 17
+- Maven
+- TestNG
+- RestAssured
+- ExtentReports
+- Lombok
+
+## Design Pattern
+
+This framework follows the Page Object Model (POM) design pattern, adapted for API testing. In this context:
+
+- Each API endpoint or group of related endpoints is represented by a separate class (similar to pages in UI testing).
+- These classes contain methods for different API operations and any necessary data manipulation.
+- Test classes use these "API objects" to perform tests, promoting code reusability and easier maintenance.
+
+## Project Structure
+
+- `src/main/java/com/dummyapi/`
+  - `config/`: Configuration files and classes
+  - `utils/`: Utility classes including TestReporter
+  - `endpoints/`: Classes representing API endpoints (following POM)
+- `src/test/java/com/dummyapi/tests/`: Test classes
+- `src/test/resources/`: Test data and configuration files
+- `test-output/`: Generated test reports
+
+## Setup and Execution
+
+1. Clone the repository
+2. Install dependencies: `mvn clean install`
+3. Run tests: `mvn test`
+
+
+## API Endpoints Covered
+
+- Movies API
+- Blog Posts API
+- Users API
+- Pokemon API
+- Products API
 
 ## Test Scenarios
 
@@ -30,29 +71,10 @@ We use various assertions to ensure the correctness of our API responses:
 - Error Handling: Ensures appropriate error responses for invalid inputs.
 - Content Type Verification: Checks that responses have the correct content type.
 
-## Installation
+## CI/CD (GitHub Actions)
 
-1. Ensure you have Java JDK 8 or higher installed.
-2. Install Maven if not already installed.
-3. Clone this repository:
-`git clone https://github.com/yourusername/api-automation.git`
-4. Navigate to the project directory:
-`cd dummyAPIAutomation`
-5. Install dependencies:
-`mvn clean install`
+This project is configured to run on GitHub Actions. The workflow is defined in `.github/workflows/test.yml`. It runs on every push and pull request to the main branch.
 
-
-## Running Tests
-
-To run all tests:
-`mvn test`
-
-## To run a specific test class:
-`mvn test -Dtest=MoviesTest`
-
-## GitHub Actions
-
-This project is configured to run tests automatically on GitHub Actions. The workflow is defined in `.github/workflows/test.yml`. It runs on every push and pull request to the main branch.
 
 ## To view the GitHub Actions runs:
 
@@ -69,9 +91,6 @@ After running the tests, TestNG generates an HTML report. To view the report:
 
 For GitHub Actions runs, you can download the test reports as artifacts from the workflow run page.
 
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## License
 
