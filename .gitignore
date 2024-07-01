@@ -5,9 +5,6 @@
 .project
 .settings/
 target/
-pom.xml.releaseBackup
-pom.xml.tag
-pom.xml.versionsBackup
 .mvn/
 *.iml
 *.ipr
@@ -24,7 +21,6 @@ hs_err_pid*
 
 # Test reports (can be adjusted based on your preference)
 test-report.html
-*.xml
 
 # Text editor backups
 *.bak
