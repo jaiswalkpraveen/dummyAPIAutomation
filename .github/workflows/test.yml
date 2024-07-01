@@ -19,22 +19,12 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
-    - name: List directory contents
-      run: ls -R
-
-    - name: Print testng.xml content
-      run: cat testng.xml
-
     - name: Build and Test with Maven
-      run: mvn clean test -X
-
-    - name: List test-output directory
-      run: ls -R test-output
-      if: always()
+      run: mvn clean test
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
       if: always()
       with:
         name: test-results
-        path: target/test-output/ExtentReport.html
+        path: test-output/ExtentReport.html
