@@ -29,6 +29,8 @@ test-output/
 
 # Secret files
 .env
+.vscode/
+
 # Add other secret files here (e.g., api keys, passwords)
 
 # Build artifacts (adjust based on your build tool)

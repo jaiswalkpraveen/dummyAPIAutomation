@@ -19,185 +19,185 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.testng.Assert.*;
 
 public class UsersTest extends TestBase {
-        final String usersUrl = UsersEndpoint.USERS;
+final String usersUrl = UsersEndpoint.USERS;
 
-        private JSONObject getTestData() throws IOException {
-                String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdata/users.json")));
-                return new JSONObject(content);
-        }
+private JSONObject getTestData() throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get("src/test/resources/testdata/users.json")));
+        return new JSONObject(content);
+}
 
-        private int generateUniqueId() {
-                return Math.abs(UUID.randomUUID().hashCode());
-        }
-
-
-         @Test
-    public void testGetAllUsers() {
-        TestReporter.logStep("Get all users");
-        Response response = given()
-                .spec(requestSpec)
-                .when()
-                .get(usersUrl)
-                .then()
-                .statusCode(200)
-                .time(lessThan(2000L))
-                .body("$", hasSize(greaterThan(0)))
-                .body("[0]", allOf(
-                    hasKey("id"),
-                    hasKey("name"),
-                    hasKey("username"),
-                    hasKey("email"),
-                    hasKey("address")
-                ))
-                .body("[0].address", allOf(
-                    hasKey("street"),
-                    hasKey("city"),
-                    hasKey("state"),
-                    hasKey("zipcode")
-                ))
-                .extract().response();
-    
-                
-                TestReporter.logStep("assert user data structure");
-        assertEquals(response.getContentType(), "application/json");
-        assertTrue(response.getBody().asString().contains("name"));
-        assertTrue(response.getBody().asString().contains("username"));
-        assertTrue(response.getBody().asString().contains("email"));
-        assertTrue(response.getBody().asString().contains("address"));
-    }
+private int generateUniqueId() {
+        return Math.abs(UUID.randomUUID().hashCode());
+}
 
 
-     @Test
-    public void testGetSingleUser() throws IOException {
-        JSONObject testData = getTestData();
-        JSONObject existingUser = testData.getJSONObject("existingUser");
+        @Test
+public void testGetAllUsers() {
+TestReporter.logStep("Get all users");
+Response response = given()
+        .spec(requestSpec)
+        .when()
+        .get(usersUrl)
+        .then()
+        .statusCode(200)
+        .time(lessThan(2000L))
+        .body("$", hasSize(greaterThan(0)))
+        .body("[0]", allOf(
+                hasKey("id"),
+                hasKey("name"),
+                hasKey("username"),
+                hasKey("email"),
+                hasKey("address")
+        ))
+        .body("[0].address", allOf(
+                hasKey("street"),
+                hasKey("city"),
+                hasKey("state"),
+                hasKey("zipcode")
+        ))
+        .extract().response();
 
-        TestReporter.logStep("Get the already existing userID");
-        int existingUserId = existingUser.getInt("id");
-
-        TestReporter.logStep("Get the existing user");
-        Response getResponse = given()
-                .spec(requestSpec)
-                .header("Content-Type", "application/json")
-                .when()
-                .get(usersUrl + "/" + existingUserId)
-                .then()
-                .statusCode(200)
-                .time(lessThan(5000L))
-                .extract().response();
-    
+        
         TestReporter.logStep("assert user data structure");
-        assertEquals(getResponse.getContentType(), "application/json");
-        JSONObject createdUser = new JSONObject(getResponse.getBody().asString());
-        assertEquals(createdUser.getString("name"), existingUser.getString("name"));
-        assertEquals(createdUser.getString("username"), existingUser.getString("username"));
-        assertEquals(createdUser.getString("email"), existingUser.getString("email"));
-    }
+assertEquals(response.getContentType(), "application/json");
+assertTrue(response.getBody().asString().contains("name"));
+assertTrue(response.getBody().asString().contains("username"));
+assertTrue(response.getBody().asString().contains("email"));
+assertTrue(response.getBody().asString().contains("address"));
+}
 
-    @Test
-    public void testGetNonExistingUser() throws IOException {
-        JSONObject testData = getTestData();
-        JSONObject nonExistingUser = testData.getJSONObject("nonexistingUser");
 
-        TestReporter.logStep("Get the non existing userID");
-        int nonExistingUserId = nonExistingUser.getInt("id");
+@Test
+public void testGetSingleUser() throws IOException {
+JSONObject testData = getTestData();
+JSONObject existingUser = testData.getJSONObject("existingUser");
 
-        TestReporter.logStep("Get the non existing user");
-        Response getResponse = given()
-                        .spec(requestSpec)
-                        .header("Content-Type", "application/json")
-                        .when()
-                        .get(usersUrl + "/" + nonExistingUserId)
-                        .then()
-                        .statusCode(404)
-                        .time(lessThan(5000L))
-                        .extract().response();
-            
-                //
-                TestReporter.logStep("Assert Expected Response Message");
-                assertEquals(getResponse.getContentType(), "application/json");
-                JSONObject fetchNonExistingUser = new JSONObject(getResponse.getBody().asString());
-                String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", nonExistingUserId);
-                assertEquals(fetchNonExistingUser.toString(), expectedMessage);
-}  
+TestReporter.logStep("Get the already existing userID");
+int existingUserId = existingUser.getInt("id");
 
-     @Test
-    public void testCreateAndGetUser() throws IOException {
-        JSONObject testData = getTestData();
-        JSONObject validUser = testData.getJSONObject("validUser");
+TestReporter.logStep("Get the existing user");
+Response getResponse = given()
+        .spec(requestSpec)
+        .header("Content-Type", "application/json")
+        .when()
+        .get(usersUrl + "/" + existingUserId)
+        .then()
+        .statusCode(200)
+        .time(lessThan(5000L))
+        .extract().response();
 
-        TestReporter.logStep("Generate a unique ID");
-        int uniqueId = generateUniqueId();
-        validUser.put("id", uniqueId); // Add the generated ID to the user data
+TestReporter.logStep("assert user data structure");
+assertEquals(getResponse.getContentType(), "application/json");
+JSONObject createdUser = new JSONObject(getResponse.getBody().asString());
+assertEquals(createdUser.getString("name"), existingUser.getString("name"));
+assertEquals(createdUser.getString("username"), existingUser.getString("username"));
+assertEquals(createdUser.getString("email"), existingUser.getString("email"));
+}
 
-        TestReporter.logStep("Create new user");
-        Response createResponse = given()
-                .spec(requestSpec)
-                .header("Content-Type", "application/json")
-                .body(validUser.toString())
-                .when()
-                .post(usersUrl)
-                .then()
-                .statusCode(200)
-                .time(lessThan(5000L))
-                .body("message", equalTo("User created successfully:"))
-                .extract().response();
+@Test
+public void testGetNonExistingUser() throws IOException {
+JSONObject testData = getTestData();
+JSONObject nonExistingUser = testData.getJSONObject("nonexistingUser");
 
-                TestReporter.logStep("Assert Expected Response Message");
-        assertEquals(createResponse.getContentType(), "application/json");
-        JSONObject createdUser = new JSONObject(createResponse.getBody().asString());
-        assertEquals(createdUser.getString("name"), validUser.getString("name"));
-        assertEquals(createdUser.getString("username"), validUser.getString("username"));
-        assertEquals(createdUser.getString("email"), validUser.getString("email"));
-    
-        TestReporter.logStep("Extract newly created user ID");
-        int createdUserId = createResponse.jsonPath().getInt("id");
+TestReporter.logStep("Get the non existing userID");
+int nonExistingUserId = nonExistingUser.getInt("id");
 
-        TestReporter.logStep("Get the created user details");
-        Response getResponse = given()
+TestReporter.logStep("Get the non existing user");
+Response getResponse = given()
                 .spec(requestSpec)
                 .header("Content-Type", "application/json")
                 .when()
-                .get(usersUrl + "/" + createdUserId)
+                .get(usersUrl + "/" + nonExistingUserId)
                 .then()
                 .statusCode(404)
                 .time(lessThan(5000L))
                 .extract().response();
-    
+        
+        //
         TestReporter.logStep("Assert Expected Response Message");
         assertEquals(getResponse.getContentType(), "application/json");
-        JSONObject fetchCreatedUser = new JSONObject(getResponse.getBody().asString());
-        String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", createdUserId);
-        assertEquals(fetchCreatedUser.toString(), expectedMessage);
-    }
+        JSONObject fetchNonExistingUser = new JSONObject(getResponse.getBody().asString());
+        String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", nonExistingUserId);
+        assertEquals(fetchNonExistingUser.toString(), expectedMessage);
+}  
 
+@Test
+public void testCreateAndGetUser() throws IOException {
+JSONObject testData = getTestData();
+JSONObject validUser = testData.getJSONObject("validUser");
 
-    @Test
-    public void testCreateUserWithExistingID() throws IOException {
-        JSONObject testData = getTestData();
-        JSONObject validUser = testData.getJSONObject("validUser");
-        JSONObject existingUser = testData.getJSONObject("existingUser");
+TestReporter.logStep("Generate a unique ID");
+int uniqueId = generateUniqueId();
+validUser.put("id", uniqueId); // Add the generated ID to the user data
 
-        TestReporter.logStep("get existing userID");
-        int existingId = existingUser.getInt("id");
-        validUser.put("id", existingId);
+TestReporter.logStep("Create new user");
+Response createResponse = given()
+        .spec(requestSpec)
+        .header("Content-Type", "application/json")
+        .body(validUser.toString())
+        .when()
+        .post(usersUrl)
+        .then()
+        .statusCode(200)
+        .time(lessThan(5000L))
+        .body("message", equalTo("User created successfully:"))
+        .extract().response();
 
-        TestReporter.logStep("get existing user");
-        Response createResponse = given()
-                .spec(requestSpec)
-                .header("Content-Type", "application/json")
-                .body(validUser.toString())
-                .when()
-                .post(usersUrl)
-                .then()
-                .statusCode(400)
-                .time(lessThan(5000L))
-                .extract().response();
-    
         TestReporter.logStep("Assert Expected Response Message");
-        assertEquals(createResponse.getContentType(), "application/json");
-        JSONObject fetchExistingUserResponse = new JSONObject(createResponse.getBody().asString());
-        String expectedMessage = String.format("{\"message\":\"The user with the id %d already exists\"}", existingId);
-        assertEquals(fetchExistingUserResponse.toString(), expectedMessage);
-    }
+assertEquals(createResponse.getContentType(), "application/json");
+JSONObject createdUser = new JSONObject(createResponse.getBody().asString());
+assertEquals(createdUser.getString("name"), validUser.getString("name"));
+assertEquals(createdUser.getString("username"), validUser.getString("username"));
+assertEquals(createdUser.getString("email"), validUser.getString("email"));
+
+TestReporter.logStep("Extract newly created user ID");
+int createdUserId = createResponse.jsonPath().getInt("id");
+
+TestReporter.logStep("Get the created user details");
+Response getResponse = given()
+        .spec(requestSpec)
+        .header("Content-Type", "application/json")
+        .when()
+        .get(usersUrl + "/" + createdUserId)
+        .then()
+        .statusCode(404)
+        .time(lessThan(5000L))
+        .extract().response();
+
+TestReporter.logStep("Assert Expected Response Message");
+assertEquals(getResponse.getContentType(), "application/json");
+JSONObject fetchCreatedUser = new JSONObject(getResponse.getBody().asString());
+String expectedMessage = String.format("{\"message\":\"User ID %d not found!\"}", createdUserId);
+assertEquals(fetchCreatedUser.toString(), expectedMessage);
+}
+
+
+@Test
+public void testCreateUserWithExistingID() throws IOException {
+JSONObject testData = getTestData();
+JSONObject validUser = testData.getJSONObject("validUser");
+JSONObject existingUser = testData.getJSONObject("existingUser");
+
+TestReporter.logStep("get existing userID");
+int existingId = existingUser.getInt("id");
+validUser.put("id", existingId);
+
+TestReporter.logStep("get existing user");
+Response createResponse = given()
+        .spec(requestSpec)
+        .header("Content-Type", "application/json")
+        .body(validUser.toString())
+        .when()
+        .post(usersUrl)
+        .then()
+        .statusCode(400)
+        .time(lessThan(5000L))
+        .extract().response();
+
+TestReporter.logStep("Assert Expected Response Message");
+assertEquals(createResponse.getContentType(), "application/json");
+JSONObject fetchExistingUserResponse = new JSONObject(createResponse.getBody().asString());
+String expectedMessage = String.format("{\"message\":\"The user with the id %d already exists\"}", existingId);
+assertEquals(fetchExistingUserResponse.toString(), expectedMessage);
+}
 }
