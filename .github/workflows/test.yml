@@ -22,31 +22,9 @@ jobs:
     - name: Build and Test with Maven
       run: mvn clean test
 
-    - name: Archive test results
+    - name: Upload test results
       uses: actions/upload-artifact@v2
       if: always()
       with:
         name: test-results
         path: test-output/ExtentReport.html
-
-    # This will work when change repository to public
-    - name: Deploy report to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: success()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./test-output
-        destination_dir: reports/${{ github.run_number }}
-
-    - name: Comment PR
-      uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
-      with:
-        github-token: ${{secrets.GITHUB_TOKEN}}
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.name,
-            body: 'Test report for this PR: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/${{ github.run_number }}/ExtentReport.html'
-          })
