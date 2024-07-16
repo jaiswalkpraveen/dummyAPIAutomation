@@ -1,4 +1,4 @@
-# Privilee Dummy API Test Automation
+# Dummy API Test Automation
 This project is an API automation framework for testing RESTful dummy APIs. It uses RestAssured, TestNG, and follows the Page Object Model design pattern.
 
 ## Tools and Technologies
